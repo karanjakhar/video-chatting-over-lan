@@ -42,13 +42,20 @@ def vsend(framestring,sock):
             sent = sock.send(framestring[totalsent:])
             totalsent+=sent
        
+def mshow(im_b):
+    p=io.BytesIO(im_b)
+    pi=Image.open(p)
+     
+    img = cv2.cvtColor(numpy.array(pi), cv2.COLOR_RGB2BGR)
+    cv2.imshow('Me',img)
+    cv2.waitKey(1)    
       
 def show(im_b):
     p=io.BytesIO(im_b)
     pi=Image.open(p)
     
     img = cv2.cvtColor(numpy.array(pi), cv2.COLOR_RGB2BGR)
-    cv2.imshow('kj',img)
+    cv2.imshow('Friend',img)
     cv2.waitKey(1)  
        
 
@@ -59,6 +66,7 @@ def send(client):
     b=io.BytesIO()
     pimg.save(b,'jpeg')
     im_b=b.getvalue()
+    mshow(im_b)
     vsend(im_b,client)
 
 def inet_connect(serverport):
