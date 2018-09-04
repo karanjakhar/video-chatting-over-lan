@@ -6,7 +6,7 @@ from PIL import Image
 import socket
 cap=cv2.VideoCapture(0)
 
-
+#first receiving size of the frame or data to receive and the data
 def vreceive(sock):
         totrec=0
          
@@ -25,7 +25,7 @@ def vreceive(sock):
 
         show(msgArray)
              
-
+#first sending the size of the frame and then the frame
 def vsend(framestring,sock):
         totalsent = 0
         metasent = 0
@@ -41,7 +41,8 @@ def vsend(framestring,sock):
           
             sent = sock.send(framestring[totalsent:])
             totalsent+=sent
-       
+
+ #showing send frames(images)
 def mshow(im_b):
     p=io.BytesIO(im_b)
     pi=Image.open(p)
@@ -49,7 +50,8 @@ def mshow(im_b):
     img = cv2.cvtColor(numpy.array(pi), cv2.COLOR_RGB2BGR)
     cv2.imshow('Me',img)
     cv2.waitKey(1)    
-      
+
+#showing received frames(images) 
 def show(im_b):
     p=io.BytesIO(im_b)
     pi=Image.open(p)
@@ -58,7 +60,7 @@ def show(im_b):
     cv2.imshow('Friend',img)
     cv2.waitKey(1)  
        
-
+#capturing and sending frames(images)
 def send(client):
     ret,img=cap.read()
     img=cv2.cvtColor(img,cv2.COLOR_BGR2RGB)
@@ -69,6 +71,7 @@ def send(client):
     mshow(im_b)
     vsend(im_b,client)
 
+ #creating server and listening on port provided 
 def inet_connect(serverport):
         s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
         s.bind(('',serverport))
@@ -82,9 +85,11 @@ def inet_connect(serverport):
      
  
 
-
+#taking port to create server 
 serverport=int(input("Enter port :")) 
 client=inet_connect(serverport)
+
+#regularly sends and receives data
 while True:
         
          
