@@ -20,6 +20,8 @@ def audio_send(client):
 def audio_rec(client):
         data=client.recv(20*1024)
         stream.write(data)
+
+#first receiving size of the frame or data to receive and the data      
 def vreceive(sock):
         totrec=0  
         metarec=0
@@ -44,7 +46,7 @@ def vreceive(sock):
 
          
  
-
+#first sending the size of the frame and then the frame
 def vsend(framestring,sock):
         totalsent = 0
         metasent = 0
@@ -61,6 +63,7 @@ def vsend(framestring,sock):
             
             totalsent += sent
 
+#showing send frames(images)
 def mshow(im_b):
     p=io.BytesIO(im_b)
     pi=Image.open(p)
@@ -69,6 +72,8 @@ def mshow(im_b):
     cv2.imshow('Me',img)
     cv2.waitKey(1)
 
+
+#showing received frames(images)
 def show(im_b):
     p=io.BytesIO(im_b)
     pi=Image.open(p)
@@ -78,7 +83,7 @@ def show(im_b):
     cv2.imshow('Friend',img)
     cv2.waitKey(1)  
        
-
+#capturing and sending frames(images)
 def send(client):
     
     ret,img=cap.read()
@@ -92,7 +97,7 @@ def send(client):
     
     vsend(im_b,client)
  
-
+ #creating server and listening on port provided 
 def inet_connect(ip,serverport):
     s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
     s.connect((ip,serverport))
@@ -104,10 +109,12 @@ def inet_connect(ip,serverport):
 serverport=int(input("Enter Port:"))
 ip=input("Enter IP:")
 s=inet_connect(ip,serverport)
+
+#regularly sends and receives data
 while True:
-   audio_send(s)
-   audio_rec(s)
-   #send(s)
-   #vreceive(s)
+   #audio_send(s)
+   #audio_rec(s)
+   send(s)
+   vreceive(s)
                 
 
